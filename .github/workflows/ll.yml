@@ -1,0 +1,67 @@
+name: Deploy VitePress site to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with retry
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          retries: 3  # 添加重试机制
+
+      - name: Verify repository structure
+        run: |
+          echo "当前目录内容:"
+          ls -la
+          echo "package.json 是否存在:"
+          [ -f "package.json" ] && echo "存在" || echo "不存在"
+          [ -f "package-lock.json" ] && echo "package-lock.json 存在" || echo "package-lock.json 不存在"
+
+      - name: Setup Node.js (without cache)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: false  # 暂时完全禁用缓存
+
+      - name: Install dependencies
+        run: |
+          npm cache clean --force
+          npm ci --prefer-offline --no-audit
+
+      - name: Build with VitePress
+        run: npm run docs:build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: my-docs/.vitepress/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

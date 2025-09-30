@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
 
-  base: '/practice/',
+  base: '/practice2/',
   title: "崔恩荣",
   description: "韩国作家",
   

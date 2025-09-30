@@ -1,0 +1,17 @@
+{
+  "name": "my-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "npx vitepress dev my-docs",      
+    "docs:build": "npx vitepress build my-docs",
+    "docs:preview": "npx vitepress preview my-docs"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

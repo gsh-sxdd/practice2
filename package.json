@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs:dev": "npx vitepress dev my-docs",      
+    "docs:dev": "npx vitepress dev my-docs",
     "docs:build": "npx vitepress build my-docs",
     "docs:preview": "npx vitepress preview my-docs"
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
